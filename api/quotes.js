@@ -22,21 +22,25 @@ function getQuotesData() {
 }
 
 
-app.get('/api/quotes', (req, res) => {
-    const quotesData = getQuotesData();
-    res.json(quotesData.daily_quotes);
-});
-
-app.get('/api/quotes/:id', (req,res) => {
-    const quotesData = getQuotesData();
-    const id = req.params.id;
-    const quote = quotesData.daily_quotes.find(q => q.id === id);
-    if (quote){
-        res.json(quote);
-    } else {
-        res.status(404).json({ message: "Quote not found" });
+module.exports = (req, res) => {
+    if (req.method === 'GET' && req.url === '/api/quotes') {
+        const quotesData = getQuotesData();
+        return res.json(quotesData.daily_quotes);
     }
-});
+
+    if (req.method === 'GET' && req.url.startsWith('/api/quotes/')) {
+        const id = req.url.split('/')[3]; 
+        const quotesData = getQuotesData();
+        const quote = quotesData.daily_quotes.find(q => q.id === id);
+        if (quote) {
+            return res.json(quote);
+        } else {
+            return res.status(404).json({ message: "Quote not found" });
+        }
+    }
+
+    res.status(404).json({ message: 'Route not found' });
+};
 
 app.listen(PORT, () => {
     console.log(`server is runing on http://localhost:${PORT}`);
