@@ -1,13 +1,5 @@
-const express = require('express');
-const cors = require('cors');
 const fs = require('fs');
 const path = require("path");
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
 
 const quotesFilePath = path.join(__dirname, 'quotes.json');
 
@@ -41,7 +33,3 @@ module.exports = (req, res) => {
 
     res.status(404).json({ message: 'Route not found' });
 };
-
-app.listen(PORT, () => {
-    console.log(`server is runing on http://localhost:${PORT}`);
-});
