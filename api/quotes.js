@@ -13,8 +13,11 @@ function getQuotesData() {
     }
 }
 
-
 module.exports = (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");  // Allow requests from any origin
+    res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    
     const { method } = req;
     const { id } = req.query;
 
